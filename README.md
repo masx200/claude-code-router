@@ -1,5 +1,11 @@
 # Claude Code Router
 
+## docker deployment
+
+```bash
+docker pull docker.cnb.cool/masx200/docker_mirror/claude-code-router:1.0.33
+```
+
 [中文版](README_zh.md)
 
 > A powerful tool to route Claude Code requests to different models and
