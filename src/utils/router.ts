@@ -11,7 +11,7 @@ const enc = get_encoding("cl100k_base");
 const calculateTokenCount = (
   messages: MessageParam[],
   system: any,
-  tools: Tool[]
+  tools: Tool[],
 ) => {
   let tokenCount = 0;
   if (Array.isArray(messages)) {
@@ -28,7 +28,7 @@ const calculateTokenCount = (
             tokenCount += enc.encode(
               typeof contentPart.content === "string"
                 ? contentPart.content
-                : JSON.stringify(contentPart.content)
+                : JSON.stringify(contentPart.content),
             ).length;
           }
         });
@@ -66,10 +66,10 @@ const getUseModel = async (req: any, tokenCount: number, config: any) => {
   if (req.body.model.includes(",")) {
     const [provider, model] = req.body.model.split(",");
     const finalProvider = config.Providers.find(
-      (p: any) => p.name.toLowerCase() === provider
+      (p: any) => p.name.toLowerCase() === provider,
     );
     const finalModel = finalProvider?.models?.find(
-      (m: any) => m.toLowerCase() === model
+      (m: any) => m.toLowerCase() === model,
     );
     if (finalProvider && finalModel) {
       return `${finalProvider.name},${finalModel}`;
@@ -83,7 +83,7 @@ const getUseModel = async (req: any, tokenCount: number, config: any) => {
       "Using long context model due to token count:",
       tokenCount,
       "threshold:",
-      longContextThreshold
+      longContextThreshold,
     );
     return config.Router.longContext;
   }
@@ -92,12 +92,12 @@ const getUseModel = async (req: any, tokenCount: number, config: any) => {
     req.body?.system[1]?.text?.startsWith("<CCR-SUBAGENT-MODEL>")
   ) {
     const model = req.body?.system[1].text.match(
-      /<CCR-SUBAGENT-MODEL>(.*?)<\/CCR-SUBAGENT-MODEL>/s
+      /<CCR-SUBAGENT-MODEL>(.*?)<\/CCR-SUBAGENT-MODEL>/s,
     );
     if (model) {
       req.body.system[1].text = req.body.system[1].text.replace(
         `<CCR-SUBAGENT-MODEL>${model[1]}</CCR-SUBAGENT-MODEL>`,
-        ""
+        "",
       );
       return model[1];
     }
@@ -131,7 +131,7 @@ export const router = async (req: any, _res: any, config: any) => {
     const tokenCount = calculateTokenCount(
       messages as MessageParam[],
       system,
-      tools as Tool[]
+      tools as Tool[],
     );
 
     let model;

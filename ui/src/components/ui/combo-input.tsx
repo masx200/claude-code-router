@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Command,
   CommandEmpty,
@@ -13,12 +13,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 interface ComboInputProps {
   options: { label: string; value: string }[];
@@ -39,42 +39,45 @@ export const ComboInput = React.forwardRef<HTMLInputElement, ComboInputProps>(({
   emptyPlaceholder = "No options found.",
   inputPlaceholder = "Type or select...",
 }, ref) => {
-  const [open, setOpen] = React.useState(false)
-  const [inputValue, setInputValue] = React.useState(value || "")
-  const internalInputRef = React.useRef<HTMLInputElement>(null)
+  const [open, setOpen] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState(value || "");
+  const internalInputRef = React.useRef<HTMLInputElement>(null);
 
   // Forward ref to the internal input
-  React.useImperativeHandle(ref, () => internalInputRef.current as HTMLInputElement)
+  React.useImperativeHandle(
+    ref,
+    () => internalInputRef.current as HTMLInputElement,
+  );
 
   React.useEffect(() => {
-    setInputValue(value || "")
-  }, [value])
+    setInputValue(value || "");
+  }, [value]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    setInputValue(newValue)
-    onChange(newValue)
-  }
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    onChange(newValue);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && inputValue.trim() && onEnter) {
-      onEnter(inputValue.trim())
-      setInputValue("")
+    if (e.key === "Enter" && inputValue.trim() && onEnter) {
+      onEnter(inputValue.trim());
+      setInputValue("");
     }
-  }
+  };
 
   const handleSelect = (selectedValue: string) => {
-    setInputValue(selectedValue)
-    onChange(selectedValue)
+    setInputValue(selectedValue);
+    onChange(selectedValue);
     if (onEnter) {
-      onEnter(selectedValue)
-      setInputValue("")
+      onEnter(selectedValue);
+      setInputValue("");
     }
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   // Function to get current value for external access
-  const getCurrentValue = () => inputValue
+  const getCurrentValue = () => inputValue;
 
   // Expose methods through the ref
   React.useImperativeHandle(ref, () => ({
@@ -82,10 +85,10 @@ export const ComboInput = React.forwardRef<HTMLInputElement, ComboInputProps>(({
     value: inputValue,
     getCurrentValue,
     clearInput: () => {
-      setInputValue("")
-      onChange("")
-    }
-  }))
+      setInputValue("");
+      onChange("");
+    },
+  }));
 
   return (
     <div className="relative">
@@ -123,7 +126,7 @@ export const ComboInput = React.forwardRef<HTMLInputElement, ComboInputProps>(({
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4 transition-opacity",
-                        value === option.value ? "opacity-100" : "opacity-0"
+                        value === option.value ? "opacity-100" : "opacity-0",
                       )}
                     />
                     {option.label}
@@ -135,5 +138,5 @@ export const ComboInput = React.forwardRef<HTMLInputElement, ComboInputProps>(({
         </PopoverContent>
       </Popover>
     </div>
-  )
-})
+  );
+});

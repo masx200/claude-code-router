@@ -1,5 +1,6 @@
 export interface ProviderTransformer {
-  use: (string | (string | Record<string, unknown> | { max_tokens: number })[])[];
+  use:
+    (string | (string | Record<string, unknown> | { max_tokens: number })[])[];
   [key: string]: any; // Allow for model-specific transformers
 }
 
@@ -12,19 +13,19 @@ export interface Provider {
 }
 
 export interface RouterConfig {
-    default: string;
-    background: string;
-    think: string;
-    longContext: string;
-    longContextThreshold: number;
-    webSearch: string;
-    custom?: any;
+  default: string;
+  background: string;
+  think: string;
+  longContext: string;
+  longContextThreshold: number;
+  webSearch: string;
+  custom?: any;
 }
 
 export interface Transformer {
-    name?: string;
-    path: string;
-    options?: Record<string, any>;
+  name?: string;
+  path: string;
+  options?: Record<string, any>;
 }
 
 export interface Config {

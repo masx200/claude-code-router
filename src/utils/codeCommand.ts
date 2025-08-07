@@ -38,22 +38,28 @@ export async function executeCodeCommand(args: string[] = []) {
   incrementReferenceCount();
 
   // Execute claude command
-  const claudePath = process.env.CLAUDE_PATH || "claude";
-  
+  const claudePath = process.env.CLAUDE_PATH || config.CLAUDE_PATH || "claude";
+
   // Properly join arguments to preserve spaces in quotes
   // Wrap each argument in double quotes to preserve single and double quotes inside arguments
-  const joinedArgs = args.length > 0 ? args.map(arg => `"${arg.replace(/\"/g, '\\"')}"`).join(" ") : "";
+  const joinedArgs = args.length > 0
+    ? args.map((arg) => `"${arg.replace(/\"/g, '\\"')}"`).join(" ")
+    : "";
 
   // 🔥 CONFIG-DRIVEN: stdio configuration based on environment
   const stdioConfig: StdioOptions = config.NON_INTERACTIVE_MODE
     ? ["pipe", "inherit", "inherit"] // Pipe stdin for non-interactive
     : "inherit"; // Default inherited behavior
 
-  const claudeProcess = spawn(claudePath + (joinedArgs ? ` ${joinedArgs}` : ""), [], {
-    env,
-    stdio: stdioConfig,
-    shell: true,
-  });
+  const claudeProcess = spawn(
+    claudePath + (joinedArgs ? ` ${joinedArgs}` : ""),
+    [],
+    {
+      env,
+      stdio: stdioConfig,
+      shell: true,
+    },
+  );
 
   // Close stdin for non-interactive mode
   if (config.NON_INTERACTIVE_MODE) {
@@ -63,7 +69,7 @@ export async function executeCodeCommand(args: string[] = []) {
   claudeProcess.on("error", (error) => {
     console.error("Failed to start claude command:", error.message);
     console.log(
-      "Make sure Claude Code is installed: npm install -g @anthropic-ai/claude-code"
+      "Make sure Claude Code is installed: npm install -g @anthropic-ai/claude-code",
     );
     decrementReferenceCount();
     process.exit(1);

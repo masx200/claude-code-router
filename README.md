@@ -2,24 +2,32 @@
 
 [中文版](README_zh.md)
 
-> A powerful tool to route Claude Code requests to different models and customize any request.
+> A powerful tool to route Claude Code requests to different models and
+> customize any request.
 
 ![](blog/images/claude-code.png)
 
 ## ✨ Features
 
-- **Model Routing**: Route requests to different models based on your needs (e.g., background tasks, thinking, long context).
-- **Multi-Provider Support**: Supports various model providers like OpenRouter, DeepSeek, Ollama, Gemini, Volcengine, and SiliconFlow.
-- **Request/Response Transformation**: Customize requests and responses for different providers using transformers.
-- **Dynamic Model Switching**: Switch models on-the-fly within Claude Code using the `/model` command.
-- **GitHub Actions Integration**: Trigger Claude Code tasks in your GitHub workflows.
+- **Model Routing**: Route requests to different models based on your needs
+  (e.g., background tasks, thinking, long context).
+- **Multi-Provider Support**: Supports various model providers like OpenRouter,
+  DeepSeek, Ollama, Gemini, Volcengine, and SiliconFlow.
+- **Request/Response Transformation**: Customize requests and responses for
+  different providers using transformers.
+- **Dynamic Model Switching**: Switch models on-the-fly within Claude Code using
+  the `/model` command.
+- **GitHub Actions Integration**: Trigger Claude Code tasks in your GitHub
+  workflows.
 - **Plugin System**: Extend functionality with custom transformers.
 
 ## 🚀 Getting Started
 
 ### 1. Installation
 
-First, ensure you have [Claude Code](https://docs.anthropic.com/en/docs/claude-code/quickstart) installed:
+First, ensure you have
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code/quickstart)
+installed:
 
 ```shell
 npm install -g @anthropic-ai/claude-code
@@ -33,18 +41,32 @@ npm install -g @musistudio/claude-code-router
 
 ### 2. Configuration
 
-Create and configure your `~/.claude-code-router/config.json` file. For more details, you can refer to `config.example.json`.
+Create and configure your `~/.claude-code-router/config.json` file. For more
+details, you can refer to `config.example.json`.
 
 The `config.json` file has several key sections:
 
-- **`PROXY_URL`** (optional): You can set a proxy for API requests, for example: `"PROXY_URL": "http://127.0.0.1:7890"`.
-- **`LOG`** (optional): You can enable logging by setting it to `true`. The log file will be located at `$HOME/.claude-code-router.log`.
-- **`APIKEY`** (optional): You can set a secret key to authenticate requests. When set, clients must provide this key in the `Authorization` header (e.g., `Bearer your-secret-key`) or the `x-api-key` header. Example: `"APIKEY": "your-secret-key"`.
-- **`HOST`** (optional): You can set the host address for the server. If `APIKEY` is not set, the host will be forced to `127.0.0.1` for security reasons to prevent unauthorized access. Example: `"HOST": "0.0.0.0"`.
-- **`NON_INTERACTIVE_MODE`** (optional): When set to `true`, enables compatibility with non-interactive environments like GitHub Actions, Docker containers, or other CI/CD systems. This sets appropriate environment variables (`CI=true`, `FORCE_COLOR=0`, etc.) and configures stdin handling to prevent the process from hanging in automated environments. Example: `"NON_INTERACTIVE_MODE": true`.
+- **`PROXY_URL`** (optional): You can set a proxy for API requests, for example:
+  `"PROXY_URL": "http://127.0.0.1:7890"`.
+- **`LOG`** (optional): You can enable logging by setting it to `true`. The log
+  file will be located at `$HOME/.claude-code-router.log`.
+- **`APIKEY`** (optional): You can set a secret key to authenticate requests.
+  When set, clients must provide this key in the `Authorization` header (e.g.,
+  `Bearer your-secret-key`) or the `x-api-key` header. Example:
+  `"APIKEY": "your-secret-key"`.
+- **`HOST`** (optional): You can set the host address for the server. If
+  `APIKEY` is not set, the host will be forced to `127.0.0.1` for security
+  reasons to prevent unauthorized access. Example: `"HOST": "0.0.0.0"`.
+- **`NON_INTERACTIVE_MODE`** (optional): When set to `true`, enables
+  compatibility with non-interactive environments like GitHub Actions, Docker
+  containers, or other CI/CD systems. This sets appropriate environment
+  variables (`CI=true`, `FORCE_COLOR=0`, etc.) and configures stdin handling to
+  prevent the process from hanging in automated environments. Example:
+  `"NON_INTERACTIVE_MODE": true`.
 
 - **`Providers`**: Used to configure different model providers.
-- **`Router`**: Used to set up routing rules. `default` specifies the default model, which will be used for all requests if no other route is configured.
+- **`Router`**: Used to set up routing rules. `default` specifies the default
+  model, which will be used for all requests if no other route is configured.
 - **`API_TIMEOUT_MS`**: Specifies the timeout for API calls in milliseconds.
 
 Here is a comprehensive example:
@@ -111,7 +133,10 @@ Here is a comprehensive example:
       "name": "modelscope",
       "api_base_url": "https://api-inference.modelscope.cn/v1/chat/completions",
       "api_key": "",
-      "models": ["Qwen/Qwen3-Coder-480B-A35B-Instruct", "Qwen/Qwen3-235B-A22B-Thinking-2507"],
+      "models": [
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+        "Qwen/Qwen3-235B-A22B-Thinking-2507"
+      ],
       "transformer": {
         "use": [
           [
@@ -174,7 +199,8 @@ Start Claude Code using the router:
 ccr code
 ```
 
-> **Note**: After modifying the configuration file, you need to restart the service for the changes to take effect:
+> **Note**: After modifying the configuration file, you need to restart the
+> service for the changes to take effect:
 >
 > ```shell
 > ccr restart
@@ -182,34 +208,43 @@ ccr code
 
 ### 4. UI Mode (Beta)
 
-For a more intuitive experience, you can use the UI mode to manage your configuration:
+For a more intuitive experience, you can use the UI mode to manage your
+configuration:
 
 ```shell
 ccr ui
 ```
 
-This will open a web-based interface where you can easily view and edit your `config.json` file.
+This will open a web-based interface where you can easily view and edit your
+`config.json` file.
 
 ![UI](/blog/images/ui.png)
 
-> **Note**: The UI mode is currently in beta. 100% vibe coding: including project initialization, I just created a folder and a project.md document, and all code was generated by ccr + qwen3-coder + gemini(webSearch). 
-If you encounter any issues, please submit an issue on GitHub.
+> **Note**: The UI mode is currently in beta. 100% vibe coding: including
+> project initialization, I just created a folder and a project.md document, and
+> all code was generated by ccr + qwen3-coder + gemini(webSearch). If you
+> encounter any issues, please submit an issue on GitHub.
 
 #### Providers
 
-The `Providers` array is where you define the different model providers you want to use. Each provider object requires:
+The `Providers` array is where you define the different model providers you want
+to use. Each provider object requires:
 
 - `name`: A unique name for the provider.
 - `api_base_url`: The full API endpoint for chat completions.
 - `api_key`: Your API key for the provider.
 - `models`: A list of model names available from this provider.
-- `transformer` (optional): Specifies transformers to process requests and responses.
+- `transformer` (optional): Specifies transformers to process requests and
+  responses.
 
 #### Transformers
 
-Transformers allow you to modify the request and response payloads to ensure compatibility with different provider APIs.
+Transformers allow you to modify the request and response payloads to ensure
+compatibility with different provider APIs.
 
-- **Global Transformer**: Apply a transformer to all models from a provider. In this example, the `openrouter` transformer is applied to all models under the `openrouter` provider.
+- **Global Transformer**: Apply a transformer to all models from a provider. In
+  this example, the `openrouter` transformer is applied to all models under the
+  `openrouter` provider.
   ```json
   {
     "name": "openrouter",
@@ -223,7 +258,9 @@ Transformers allow you to modify the request and response payloads to ensure com
     "transformer": { "use": ["openrouter"] }
   }
   ```
-- **Model-Specific Transformer**: Apply a transformer to a specific model. In this example, the `deepseek` transformer is applied to all models, and an additional `tooluse` transformer is applied only to the `deepseek-chat` model.
+- **Model-Specific Transformer**: Apply a transformer to a specific model. In
+  this example, the `deepseek` transformer is applied to all models, and an
+  additional `tooluse` transformer is applied only to the `deepseek-chat` model.
 
   ```json
   {
@@ -238,7 +275,9 @@ Transformers allow you to modify the request and response payloads to ensure com
   }
   ```
 
-- **Passing Options to a Transformer**: Some transformers, like `maxtoken`, accept options. To pass options, use a nested array where the first element is the transformer name and the second is an options object.
+- **Passing Options to a Transformer**: Some transformers, like `maxtoken`,
+  accept options. To pass options, use a nested array where the first element is
+  the transformer name and the second is an options object.
   ```json
   {
     "name": "siliconflow",
@@ -260,40 +299,51 @@ Transformers allow you to modify the request and response payloads to ensure com
 
 **Available Built-in Transformers:**
 
-- `Anthropic`:If you use only the `Anthropic` transformer, it will preserve the original request and response parameters(you can use it to connect directly to an Anthropic endpoint).
+- `Anthropic`:If you use only the `Anthropic` transformer, it will preserve the
+  original request and response parameters(you can use it to connect directly to
+  an Anthropic endpoint).
 - `deepseek`: Adapts requests/responses for DeepSeek API.
 - `gemini`: Adapts requests/responses for Gemini API.
-- `openrouter`: Adapts requests/responses for OpenRouter API. It can also accept a `provider` routing parameter to specify which underlying providers OpenRouter should use. For more details, refer to the [OpenRouter documentation](https://openrouter.ai/docs/features/provider-routing). See an example below:
+- `openrouter`: Adapts requests/responses for OpenRouter API. It can also accept
+  a `provider` routing parameter to specify which underlying providers
+  OpenRouter should use. For more details, refer to the
+  [OpenRouter documentation](https://openrouter.ai/docs/features/provider-routing).
+  See an example below:
   ```json
-    "transformer": {
-      "use": ["openrouter"],
-      "moonshotai/kimi-k2": {
-        "use": [
-          [
-            "openrouter",
-            {
-              "provider": {
-                "only": ["moonshotai/fp8"]
-              }
+  "transformer": {
+    "use": ["openrouter"],
+    "moonshotai/kimi-k2": {
+      "use": [
+        [
+          "openrouter",
+          {
+            "provider": {
+              "only": ["moonshotai/fp8"]
             }
-          ]
+          }
         ]
-      }
+      ]
     }
+  }
   ```
 - `groq`: Adapts requests/responses for groq API.
 - `maxtoken`: Sets a specific `max_tokens` value.
 - `tooluse`: Optimizes tool usage for certain models via `tool_choice`.
-- `gemini-cli` (experimental): Unofficial support for Gemini via Gemini CLI [gemini-cli.js](https://gist.github.com/musistudio/1c13a65f35916a7ab690649d3df8d1cd).
+- `gemini-cli` (experimental): Unofficial support for Gemini via Gemini CLI
+  [gemini-cli.js](https://gist.github.com/musistudio/1c13a65f35916a7ab690649d3df8d1cd).
 - `reasoning`: Used to process the `reasoning_content` field.
-- `sampling`: Used to process sampling information fields such as `temperature`, `top_p`, `top_k`, and `repetition_penalty`.
-- `enhancetool`: Adds a layer of error tolerance to the tool call parameters returned by the LLM (this will cause the tool call information to no longer be streamed).
+- `sampling`: Used to process sampling information fields such as `temperature`,
+  `top_p`, `top_k`, and `repetition_penalty`.
+- `enhancetool`: Adds a layer of error tolerance to the tool call parameters
+  returned by the LLM (this will cause the tool call information to no longer be
+  streamed).
 - `cleancache`: Clears the `cache_control` field from requests.
 - `vertex-gemini`: Handles the Gemini API using Vertex authentication.
 
 **Custom Transformers:**
 
-You can also create your own transformers and load them via the `transformers` field in `config.json`.
+You can also create your own transformers and load them via the `transformers`
+field in `config.json`.
 
 ```json
 {
@@ -313,19 +363,25 @@ You can also create your own transformers and load them via the `transformers` f
 The `Router` object defines which model to use for different scenarios:
 
 - `default`: The default model for general tasks.
-- `background`: A model for background tasks. This can be a smaller, local model to save costs.
+- `background`: A model for background tasks. This can be a smaller, local model
+  to save costs.
 - `think`: A model for reasoning-heavy tasks, like Plan Mode.
 - `longContext`: A model for handling long contexts (e.g., > 60K tokens).
-- `longContextThreshold` (optional): The token count threshold for triggering the long context model. Defaults to 60000 if not specified.
-- `webSearch`: Used for handling web search tasks and this requires the model itself to support the feature. If you're using openrouter, you need to add the `:online` suffix after the model name.
+- `longContextThreshold` (optional): The token count threshold for triggering
+  the long context model. Defaults to 60000 if not specified.
+- `webSearch`: Used for handling web search tasks and this requires the model
+  itself to support the feature. If you're using openrouter, you need to add the
+  `:online` suffix after the model name.
 
 You can also switch models dynamically in Claude Code with the `/model` command:
-`/model provider_name,model_name`
-Example: `/model openrouter,anthropic/claude-3.5-sonnet`
+`/model provider_name,model_name` Example:
+`/model openrouter,anthropic/claude-3.5-sonnet`
 
 #### Custom Router
 
-For more advanced routing logic, you can specify a custom router script via the `CUSTOM_ROUTER_PATH` in your `config.json`. This allows you to implement complex routing rules beyond the default scenarios.
+For more advanced routing logic, you can specify a custom router script via the
+`CUSTOM_ROUTER_PATH` in your `config.json`. This allows you to implement complex
+routing rules beyond the default scenarios.
 
 In your `config.json`:
 
@@ -335,7 +391,10 @@ In your `config.json`:
 }
 ```
 
-The custom router file must be a JavaScript module that exports an `async` function. This function receives the request object and the config object as arguments and should return the provider and model name as a string (e.g., `"provider_name,model_name"`), or `null` to fall back to the default router.
+The custom router file must be a JavaScript module that exports an `async`
+function. This function receives the request object and the config object as
+arguments and should return the provider and model name as a string (e.g.,
+`"provider_name,model_name"`), or `null` to fall back to the default router.
 
 Here is an example of a `custom-router.js` based on `custom-router.example.js`:
 
@@ -364,7 +423,10 @@ module.exports = async function router(req, config) {
 
 ##### Subagent Routing
 
-For routing within subagents, you must specify a particular provider and model by including `<CCR-SUBAGENT-MODEL>provider,model</CCR-SUBAGENT-MODEL>` at the **beginning** of the subagent's prompt. This allows you to direct specific subagent tasks to designated models.
+For routing within subagents, you must specify a particular provider and model
+by including `<CCR-SUBAGENT-MODEL>provider,model</CCR-SUBAGENT-MODEL>` at the
+**beginning** of the subagent's prompt. This allows you to direct specific
+subagent tasks to designated models.
 
 **Example:**
 
@@ -375,7 +437,9 @@ Please help me analyze this code snippet for potential optimizations...
 
 ## 🤖 GitHub Actions
 
-Integrate Claude Code Router into your CI/CD pipeline. After setting up [Claude Code Actions](https://docs.anthropic.com/en/docs/claude-code/github-actions), modify your `.github/workflows/claude.yaml` to use the router:
+Integrate Claude Code Router into your CI/CD pipeline. After setting up
+[Claude Code Actions](https://docs.anthropic.com/en/docs/claude-code/github-actions),
+modify your `.github/workflows/claude.yaml` to use the router:
 
 ```yaml
 name: Claude Code
@@ -431,9 +495,12 @@ jobs:
           anthropic_api_key: "any-string-is-ok"
 ```
 
-> **Note**: When running in GitHub Actions or other automation environments, make sure to set `"NON_INTERACTIVE_MODE": true` in your configuration to prevent the process from hanging due to stdin handling issues.
+> **Note**: When running in GitHub Actions or other automation environments,
+> make sure to set `"NON_INTERACTIVE_MODE": true` in your configuration to
+> prevent the process from hanging due to stdin handling issues.
 
-This setup allows for interesting automations, like running tasks during off-peak hours to reduce API costs.
+This setup allows for interesting automations, like running tasks during
+off-peak hours to reduce API costs.
 
 ## 📝 Further Reading
 
@@ -442,7 +509,8 @@ This setup allows for interesting automations, like running tasks during off-pea
 
 ## ❤️ Support & Sponsoring
 
-If you find this project helpful, please consider sponsoring its development. Your support is greatly appreciated!
+If you find this project helpful, please consider sponsoring its development.
+Your support is greatly appreciated!
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/F1F31GN2GM)
 
@@ -458,7 +526,6 @@ If you find this project helpful, please consider sponsoring its development. Yo
 ### Our Sponsors
 
 A huge thank you to all our sponsors for their generous support!
-
 
 - [AIHubmix](https://aihubmix.com/)
 - @Simon Leischnig
@@ -505,6 +572,7 @@ A huge thank you to all our sponsors for their generous support!
 - @b\*g
 - @\*亿
 - @\*辉
-- @JACK 
+- @JACK
 
-(If your name is masked, please contact me via my homepage email to update it with your GitHub username.)
+(If your name is masked, please contact me via my homepage email to update it
+with your GitHub username.)

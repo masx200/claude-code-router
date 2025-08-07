@@ -30,7 +30,7 @@ export function Router() {
     think: "",
     longContext: "",
     longContextThreshold: 60000,
-    webSearch: ""
+    webSearch: "",
   };
 
   const handleRouterChange = (field: string, value: string | number) => {
@@ -42,17 +42,17 @@ export function Router() {
 
   // Handle case where config.Providers might be null or undefined
   const providers = Array.isArray(config.Providers) ? config.Providers : [];
-  
+
   const modelOptions = providers.flatMap((provider) => {
     // Handle case where individual provider might be null or undefined
     if (!provider) return [];
-    
+
     // Handle case where provider.models might be null or undefined
     const models = Array.isArray(provider.models) ? provider.models : [];
-    
+
     // Handle case where provider.name might be null or undefined
     const providerName = provider.name || "Unknown Provider";
-    
+
     return models.map((model) => ({
       value: `${providerName},${model || "Unknown Model"}`,
       label: `${providerName}, ${model || "Unknown Model"}`,
@@ -116,7 +116,11 @@ export function Router() {
               <Input
                 type="number"
                 value={routerConfig.longContextThreshold || 60000}
-                onChange={(e) => handleRouterChange("longContextThreshold", parseInt(e.target.value) || 60000)}
+                onChange={(e) =>
+                  handleRouterChange(
+                    "longContextThreshold",
+                    parseInt(e.target.value) || 60000,
+                  )}
                 placeholder="60000"
               />
             </div>

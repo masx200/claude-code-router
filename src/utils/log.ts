@@ -21,10 +21,10 @@ export function log(...args: any[]) {
   const logMessage = `[${timestamp}] ${
     Array.isArray(args)
       ? args
-          .map((arg) =>
-            typeof arg === "object" ? JSON.stringify(arg) : String(arg)
-          )
-          .join(" ")
+        .map((arg) =>
+          typeof arg === "object" ? JSON.stringify(arg) : String(arg)
+        )
+        .join(" ")
       : ""
   }\n`;
 

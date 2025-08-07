@@ -19,7 +19,7 @@ async function initializeClaudeConfig() {
   if (!existsSync(configPath)) {
     const userID = Array.from(
       { length: 64 },
-      () => Math.random().toString(16)[2]
+      () => Math.random().toString(16)[2],
     ).join("");
     const configContent = {
       numStartups: 184,
@@ -52,7 +52,7 @@ async function run(options: RunOptions = {}) {
   if (config.HOST && !config.APIKEY) {
     HOST = "127.0.0.1";
     console.warn(
-      "⚠️ API key is not set. HOST is forced to 127.0.0.1."
+      "⚠️ API key is not set. HOST is forced to 127.0.0.1.",
     );
   }
 
@@ -73,7 +73,7 @@ async function run(options: RunOptions = {}) {
     cleanupPidFile();
     process.exit(0);
   });
-  console.log(HOST)
+  console.log(HOST);
 
   // Use port from environment variable if set (for background process)
   const servicePort = process.env.SERVICE_PORT
@@ -89,14 +89,14 @@ async function run(options: RunOptions = {}) {
       LOG_FILE: join(
         homedir(),
         ".claude-code-router",
-        "claude-code-router.log"
+        "claude-code-router.log",
       ),
     },
   });
   server.addHook("preHandler", apiKeyAuth(config));
   server.addHook("preHandler", async (req, reply) => {
-    if(req.url.startsWith("/v1/messages")) {
-      router(req, reply, config)
+    if (req.url.startsWith("/v1/messages")) {
+      router(req, reply, config);
     }
   });
   server.start();

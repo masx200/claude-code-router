@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { SettingsDialog } from "@/components/SettingsDialog";
@@ -9,7 +9,7 @@ import { JsonEditor } from "@/components/JsonEditor";
 import { Button } from "@/components/ui/button";
 import { useConfig } from "@/components/ConfigProvider";
 import { api } from "@/lib/api";
-import { Settings, Languages, Save, RefreshCw, FileJson } from "lucide-react";
+import { FileJson, Languages, RefreshCw, Save, Settings } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -25,7 +25,9 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isJsonEditorOpen, setIsJsonEditorOpen] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'warning' } | null>(null);
+  const [toast, setToast] = useState<
+    { message: string; type: "success" | "error" | "warning" } | null
+  >(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -34,14 +36,14 @@ function App() {
         setIsCheckingAuth(false);
         return;
       }
-      
+
       // For empty API key, allow access without checking config
-      const apiKey = localStorage.getItem('apiKey');
+      const apiKey = localStorage.getItem("apiKey");
       if (!apiKey) {
         setIsCheckingAuth(false);
         return;
       }
-      
+
       // If we don't have a config, try to fetch it
       try {
         await api.getConfig();
@@ -50,10 +52,10 @@ function App() {
       } catch (err) {
         // If it's a 401, the API client will redirect to login
         // For other errors, we still show the app to display the error
-        console.error('Error checking auth:', err);
+        console.error("Error checking auth:", err);
         // Redirect to login on authentication error
-        if ((err as Error).message === 'Unauthorized') {
-          navigate('/login');
+        if ((err as Error).message === "Unauthorized") {
+          navigate("/login");
         }
       } finally {
         setIsCheckingAuth(false);
@@ -61,99 +63,124 @@ function App() {
     };
 
     checkAuth();
-    
+
     // Listen for unauthorized events
     const handleUnauthorized = () => {
-      navigate('/login');
+      navigate("/login");
     };
-    
-    window.addEventListener('unauthorized', handleUnauthorized);
-    
+
+    window.addEventListener("unauthorized", handleUnauthorized);
+
     return () => {
-      window.removeEventListener('unauthorized', handleUnauthorized);
+      window.removeEventListener("unauthorized", handleUnauthorized);
     };
   }, [config, navigate]);
 
   const saveConfig = async () => {
     // Handle case where config might be null or undefined
     if (!config) {
-      setToast({ message: t('app.config_missing'), type: 'error' });
+      setToast({ message: t("app.config_missing"), type: "error" });
       return;
     }
-    
+
     try {
       // Save to API
       const response = await api.updateConfig(config);
       // Show success message or handle as needed
-      console.log('Config saved successfully');
-      
+      console.log("Config saved successfully");
+
       // 根据响应信息进行提示
-      if (response && typeof response === 'object' && 'success' in response) {
+      if (response && typeof response === "object" && "success" in response) {
         const apiResponse = response as { success: boolean; message?: string };
         if (apiResponse.success) {
-          setToast({ message: apiResponse.message || t('app.config_saved_success'), type: 'success' });
+          setToast({
+            message: apiResponse.message || t("app.config_saved_success"),
+            type: "success",
+          });
         } else {
-          setToast({ message: apiResponse.message || t('app.config_saved_failed'), type: 'error' });
+          setToast({
+            message: apiResponse.message || t("app.config_saved_failed"),
+            type: "error",
+          });
         }
       } else {
         // 默认成功提示
-        setToast({ message: t('app.config_saved_success'), type: 'success' });
+        setToast({ message: t("app.config_saved_success"), type: "success" });
       }
     } catch (error) {
-      console.error('Failed to save config:', error);
+      console.error("Failed to save config:", error);
       // Handle error appropriately
-      setToast({ message: t('app.config_saved_failed') + ': ' + (error as Error).message, type: 'error' });
+      setToast({
+        message: t("app.config_saved_failed") + ": " + (error as Error).message,
+        type: "error",
+      });
     }
   };
 
   const saveConfigAndRestart = async () => {
     // Handle case where config might be null or undefined
     if (!config) {
-      setToast({ message: t('app.config_missing'), type: 'error' });
+      setToast({ message: t("app.config_missing"), type: "error" });
       return;
     }
-    
+
     try {
       // Save to API
       const response = await api.updateConfig(config);
-      
+
       // Check if save was successful before restarting
       let saveSuccessful = true;
-      if (response && typeof response === 'object' && 'success' in response) {
+      if (response && typeof response === "object" && "success" in response) {
         const apiResponse = response as { success: boolean; message?: string };
         if (!apiResponse.success) {
           saveSuccessful = false;
-          setToast({ message: apiResponse.message || t('app.config_saved_failed'), type: 'error' });
+          setToast({
+            message: apiResponse.message || t("app.config_saved_failed"),
+            type: "error",
+          });
         }
       }
-      
+
       // Only restart if save was successful
       if (saveSuccessful) {
         // Restart service
         const response = await api.restartService();
-        
+
         // Show success message or handle as needed
-        console.log('Config saved and service restarted successfully');
-        
+        console.log("Config saved and service restarted successfully");
+
         // 根据响应信息进行提示
-        if (response && typeof response === 'object' && 'success' in response) {
-          const apiResponse = response as { success: boolean; message?: string };
+        if (response && typeof response === "object" && "success" in response) {
+          const apiResponse = response as {
+            success: boolean;
+            message?: string;
+          };
           if (apiResponse.success) {
-            setToast({ message: apiResponse.message || t('app.config_saved_restart_success'), type: 'success' });
+            setToast({
+              message: apiResponse.message ||
+                t("app.config_saved_restart_success"),
+              type: "success",
+            });
           }
         } else {
           // 默认成功提示
-          setToast({ message: t('app.config_saved_restart_success'), type: 'success' });
+          setToast({
+            message: t("app.config_saved_restart_success"),
+            type: "success",
+          });
         }
       }
     } catch (error) {
-      console.error('Failed to save config and restart:', error);
+      console.error("Failed to save config and restart:", error);
       // Handle error appropriately
-      setToast({ message: t('app.config_saved_restart_failed') + ': ' + (error as Error).message, type: 'error' });
+      setToast({
+        message: t("app.config_saved_restart_failed") + ": " +
+          (error as Error).message,
+        type: "error",
+      });
     }
   };
 
-  
   if (isCheckingAuth) {
     return (
       <div className="h-screen bg-gray-50 font-sans flex items-center justify-center">
@@ -182,46 +209,69 @@ function App() {
   return (
     <div className="h-screen bg-gray-50 font-sans">
       <header className="flex h-16 items-center justify-between border-b bg-white px-6">
-        <h1 className="text-xl font-semibold text-gray-800">{t('app.title')}</h1>
+        <h1 className="text-xl font-semibold text-gray-800">
+          {t("app.title")}
+        </h1>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={() => setIsSettingsOpen(true)} className="transition-all-ease hover:scale-110">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsSettingsOpen(true)}
+            className="transition-all-ease hover:scale-110"
+          >
             <Settings className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => setIsJsonEditorOpen(true)} className="transition-all-ease hover:scale-110">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsJsonEditorOpen(true)}
+            className="transition-all-ease hover:scale-110"
+          >
             <FileJson className="h-5 w-5" />
           </Button>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="transition-all-ease hover:scale-110">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="transition-all-ease hover:scale-110"
+              >
                 <Languages className="h-5 w-5" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-32 p-2">
               <div className="space-y-1">
                 <Button
-                  variant={i18n.language.startsWith('en') ? 'default' : 'ghost'}
+                  variant={i18n.language.startsWith("en") ? "default" : "ghost"}
                   className="w-full justify-start transition-all-ease hover:scale-[1.02]"
-                  onClick={() => i18n.changeLanguage('en')}
+                  onClick={() => i18n.changeLanguage("en")}
                 >
                   English
                 </Button>
                 <Button
-                  variant={i18n.language.startsWith('zh') ? 'default' : 'ghost'}
+                  variant={i18n.language.startsWith("zh") ? "default" : "ghost"}
                   className="w-full justify-start transition-all-ease hover:scale-[1.02]"
-                  onClick={() => i18n.changeLanguage('zh')}
+                  onClick={() => i18n.changeLanguage("zh")}
                 >
                   中文
                 </Button>
               </div>
             </PopoverContent>
           </Popover>
-          <Button onClick={saveConfig} variant="outline" className="transition-all-ease hover:scale-[1.02] active:scale-[0.98]">
+          <Button
+            onClick={saveConfig}
+            variant="outline"
+            className="transition-all-ease hover:scale-[1.02] active:scale-[0.98]"
+          >
             <Save className="mr-2 h-4 w-4" />
-            {t('app.save')}
+            {t("app.save")}
           </Button>
-          <Button onClick={saveConfigAndRestart} className="transition-all-ease hover:scale-[1.02] active:scale-[0.98]">
+          <Button
+            onClick={saveConfigAndRestart}
+            className="transition-all-ease hover:scale-[1.02] active:scale-[0.98]"
+          >
             <RefreshCw className="mr-2 h-4 w-4" />
-            {t('app.save_and_restart')}
+            {t("app.save_and_restart")}
           </Button>
         </div>
       </header>
@@ -238,17 +288,20 @@ function App() {
           </div>
         </div>
       </main>
-      <SettingsDialog isOpen={isSettingsOpen} onOpenChange={setIsSettingsOpen} />
-      <JsonEditor 
-        open={isJsonEditorOpen} 
-        onOpenChange={setIsJsonEditorOpen} 
-        showToast={(message, type) => setToast({ message, type })} 
+      <SettingsDialog
+        isOpen={isSettingsOpen}
+        onOpenChange={setIsSettingsOpen}
+      />
+      <JsonEditor
+        open={isJsonEditorOpen}
+        onOpenChange={setIsJsonEditorOpen}
+        showToast={(message, type) => setToast({ message, type })}
       />
       {toast && (
-        <Toast 
-          message={toast.message} 
-          type={toast.type} 
-          onClose={() => setToast(null)} 
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
         />
       )}
     </div>

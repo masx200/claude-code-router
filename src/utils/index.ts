@@ -89,22 +89,24 @@ export const readConfigFile = async () => {
 export const backupConfigFile = async () => {
   try {
     if (await fs.access(CONFIG_FILE).then(() => true).catch(() => false)) {
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
       const backupPath = `${CONFIG_FILE}.${timestamp}.bak`;
       await fs.copyFile(CONFIG_FILE, backupPath);
-      
+
       // Clean up old backups, keeping only the 3 most recent
       try {
         const configDir = path.dirname(CONFIG_FILE);
         const configFileName = path.basename(CONFIG_FILE);
         const files = await fs.readdir(configDir);
-        
+
         // Find all backup files for this config
         const backupFiles = files
-          .filter(file => file.startsWith(configFileName) && file.endsWith('.bak'))
+          .filter((file) =>
+            file.startsWith(configFileName) && file.endsWith(".bak")
+          )
           .sort()
           .reverse(); // Sort in descending order (newest first)
-        
+
         // Delete all but the 3 most recent backups
         if (backupFiles.length > 3) {
           for (let i = 3; i < backupFiles.length; i++) {
@@ -115,7 +117,7 @@ export const backupConfigFile = async () => {
       } catch (cleanupError) {
         console.warn("Failed to clean up old backups:", cleanupError);
       }
-      
+
       return backupPath;
     }
   } catch (error) {

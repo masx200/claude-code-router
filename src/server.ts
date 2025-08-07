@@ -14,13 +14,13 @@ export const createServer = (config: any): Server => {
   });
 
   server.app.get("/api/transformers", async () => {
-    const transformers =
-      server.app._server!.transformerService.getAllTransformers();
+    const transformers = server.app._server!.transformerService
+      .getAllTransformers();
     const transformerList = Array.from(transformers.entries()).map(
       ([name, transformer]: any) => ({
         name,
         endpoint: transformer.endPoint || null,
-      })
+      }),
     );
     return { transformers: transformerList };
   });
@@ -28,14 +28,14 @@ export const createServer = (config: any): Server => {
   // Add endpoint to save config.json
   server.app.post("/api/config", async (req) => {
     const newConfig = req.body;
-    
+
     // Backup existing config file if it exists
     const { backupConfigFile } = await import("./utils");
     const backupPath = await backupConfigFile();
     if (backupPath) {
       console.log(`Backed up existing configuration file to ${backupPath}`);
     }
-    
+
     await writeConfigFile(newConfig);
     return { success: true, message: "Config saved successfully" };
   });
@@ -47,7 +47,10 @@ export const createServer = (config: any): Server => {
     // Restart the service after a short delay to allow response to be sent
     setTimeout(() => {
       const { spawn } = require("child_process");
-      spawn(process.execPath, [process.argv[1], "restart"], { detached: true, stdio: "ignore" });
+      spawn(process.execPath, [process.argv[1], "restart"], {
+        detached: true,
+        stdio: "ignore",
+      });
     }, 1000);
   });
 

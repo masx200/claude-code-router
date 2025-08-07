@@ -84,7 +84,6 @@
     "api_key_required": "API Key is required",
     "name_required": "Name is required",
     "name_duplicate": "A provider with this name already exists"
-
   },
   "router": {
     "title": "Router",

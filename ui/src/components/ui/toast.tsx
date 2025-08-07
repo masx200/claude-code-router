@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { CheckCircle, XCircle, AlertCircle, X } from 'lucide-react';
+import { useEffect } from "react";
+import { AlertCircle, CheckCircle, X, XCircle } from "lucide-react";
 
 interface ToastProps {
   message: string;
-  type: 'success' | 'error' | 'warning';
+  type: "success" | "error" | "warning";
   onClose: () => void;
 }
 
@@ -18,11 +18,11 @@ export function Toast({ message, type, onClose }: ToastProps) {
 
   const getIcon = () => {
     switch (type) {
-      case 'success':
+      case "success":
         return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case 'error':
+      case "error":
         return <XCircle className="h-5 w-5 text-red-500" />;
-      case 'warning':
+      case "warning":
         return <AlertCircle className="h-5 w-5 text-yellow-500" />;
       default:
         return null;
@@ -31,24 +31,26 @@ export function Toast({ message, type, onClose }: ToastProps) {
 
   const getBackgroundColor = () => {
     switch (type) {
-      case 'success':
-        return 'bg-green-100 border-green-200';
-      case 'error':
-        return 'bg-red-100 border-red-200';
-      case 'warning':
-        return 'bg-yellow-100 border-yellow-200';
+      case "success":
+        return "bg-green-100 border-green-200";
+      case "error":
+        return "bg-red-100 border-red-200";
+      case "warning":
+        return "bg-yellow-100 border-yellow-200";
       default:
-        return 'bg-gray-100 border-gray-200';
+        return "bg-gray-100 border-gray-200";
     }
   };
 
   return (
-    <div className={`fixed top-4 right-4 z-50 flex items-center justify-between p-4 rounded-lg border shadow-lg ${getBackgroundColor()} transition-all duration-300 ease-in-out`}>
+    <div
+      className={`fixed top-4 right-4 z-50 flex items-center justify-between p-4 rounded-lg border shadow-lg ${getBackgroundColor()} transition-all duration-300 ease-in-out`}
+    >
       <div className="flex items-center space-x-2">
         {getIcon()}
         <span className="text-sm font-medium">{message}</span>
       </div>
-      <button 
+      <button
         onClick={onClose}
         className="ml-4 text-gray-500 hover:text-gray-700 focus:outline-none"
       >

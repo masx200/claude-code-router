@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, ChevronsUpDown, X } from "lucide-react"
+import * as React from "react";
+import { Check, ChevronsUpDown, X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -12,13 +12,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
 
 interface MultiComboboxProps {
   options: { label: string; value: string }[];
@@ -37,26 +37,26 @@ export function MultiCombobox({
   searchPlaceholder = "Search...",
   emptyPlaceholder = "No options found.",
 }: MultiComboboxProps) {
-  const [open, setOpen] = React.useState(false)
-  
+  const [open, setOpen] = React.useState(false);
+
   const handleSelect = (currentValue: string) => {
     if (value.includes(currentValue)) {
-      onChange(value.filter(v => v !== currentValue))
+      onChange(value.filter((v) => v !== currentValue));
     } else {
-      onChange([...value, currentValue])
+      onChange([...value, currentValue]);
     }
-  }
-  
+  };
+
   const removeValue = (val: string, e: React.MouseEvent) => {
-    e.stopPropagation()
-    onChange(value.filter(v => v !== val))
-  }
+    e.stopPropagation();
+    onChange(value.filter((v) => v !== val));
+  };
 
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap gap-1">
         {value.map((val) => {
-          const option = options.find(opt => opt.value === val)
+          const option = options.find((opt) => opt.value === val);
           return (
             <Badge key={val} variant="outline" className="font-normal">
               {option?.label || val}
@@ -67,7 +67,7 @@ export function MultiCombobox({
                 <X className="h-3 w-3" />
               </button>
             </Badge>
-          )
+          );
         })}
       </div>
       <Popover open={open} onOpenChange={setOpen}>
@@ -98,7 +98,9 @@ export function MultiCombobox({
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4 transition-opacity",
-                        value.includes(option.value) ? "opacity-100" : "opacity-0"
+                        value.includes(option.value)
+                          ? "opacity-100"
+                          : "opacity-0",
                       )}
                     />
                     {option.label}
@@ -110,5 +112,5 @@ export function MultiCombobox({
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }
