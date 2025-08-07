@@ -426,7 +426,7 @@ jobs:
         id: claude
         uses: anthropics/claude-code-action@beta
         env:
-          ANTHROPIC_BASE_URL: http://localhost:3456
+          ANTHROPIC_BASE_URL: http://localhost:13456
         with:
           anthropic_api_key: "any-string-is-ok"
 ```

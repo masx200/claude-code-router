@@ -56,7 +56,7 @@ async function run(options: RunOptions = {}) {
     );
   }
 
-  const port = config.PORT || 3456;
+  const port = config.PORT || 13456;
 
   // Save the PID of the background process
   savePid(process.pid);

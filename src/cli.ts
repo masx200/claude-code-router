@@ -169,7 +169,7 @@ async function main() {
 
             // Create a minimal default config file
             await writeConfigFile({
-              PORT: 3456,
+              PORT: 13456,
               Providers: [],
               Router: {},
             });
