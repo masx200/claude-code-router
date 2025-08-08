@@ -24,4 +24,4 @@ RUN pnpm run build
 EXPOSE 13456
 
 # Start the router service
-CMD ["node", "dist/cli.js", "start"]
+CMD [ "sh",       "-c",       "rm -frv /root/.claude-code-router/.claude-code-router.pid  && 'node' 'dist/cli.js' 'start'"]
