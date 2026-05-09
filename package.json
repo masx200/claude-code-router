@@ -40,5 +40,13 @@
       "src/",
       "screenshots/"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-uri": ">=3.1.2"
+    }
+  },
+  "resolutions": {
+    "fast-uri": ">=3.1.2"
   }
 }
